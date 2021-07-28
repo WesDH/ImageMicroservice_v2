@@ -15,8 +15,9 @@
 
 
 // Global Variable Definition(s):
-let service_images = []
-let token = null
+let service_images = []  // Array to hold <img> elements that call the micro-service
+//let token = null
+let URL_concat  // The orginal image URL we will be attempting to modify
 
 window.addEventListener('DOMContentLoaded', (event) => {
     console.log('DOM fully loaded and parsed');
@@ -29,13 +30,6 @@ window.addEventListener('DOMContentLoaded', (event) => {
 // create_img_array()
 // iterate_images()
 
-// Search document for elements calling the microservice and
-// create an array of all elements with attribute=value of: service="wesMS"
-function create_img_array() {
-    service_images = document.querySelectorAll('[service="wesMS"]');
-}
-
-
 
 
 /**
@@ -44,17 +38,19 @@ function create_img_array() {
  * This is to account for dynamically created HTML
  */
 const ObserveBody = document.body;
-// create a new instance of `MutationObserver` named `observer`,
-// passing it a callback function
 const observer = new MutationObserver(function() {
-    console.log('callback that runs when observer is triggered');
+    //console.log('callback that runs when observer is triggered');
     create_img_array()
     iterate_images()
 });
-// call `observe()` on that MutationObserver instance,
-// passing it the element to observe, and the options object
 observer.observe(ObserveBody, {subtree: true, childList: true});
 
+
+// Search document for elements calling the microservice and
+// create an array of all elements with attribute=value of: service="wesMS"
+function create_img_array() {
+    service_images = document.querySelectorAll('[service="wesMS"]');
+}
 
 
 
@@ -70,7 +66,7 @@ function iterate_images() {
     service_images.forEach(element => {
 
         // URL_concat to equal the value in src="value", this *should* include the full image URL and query string
-        let URL_concat = element.getAttribute('src');
+        URL_concat = element.getAttribute('src');
 
         // Now delete the src image, for now in the HTML, to be reinserted, later
         element.setAttribute("src", "")
@@ -111,7 +107,7 @@ function iterate_images() {
         //     token: token
         // }));
         xhr.onload = function() {
-            console.log(this.responseText);
+            //console.log(this.responseText);
             let data = JSON.parse(this.responseText);
             insertImg(data, url, path_dir, file_name, query_str)
             console.log(data);
@@ -178,35 +174,41 @@ function get_query_string(file_path) {
 }
 
 // Helper function for function iterate_images()
-// Function to get the base path of the current directory, minus /'s and minus the current file name
+// Function to get the full base path of the current image, removing /'s and .'s
+// Used to pass to node server, will be directory remote image will be stored into
 function get_path(host, path) {
-
+    let path_temp = ""
     // Slice the end: "/filename.html" off
     let path_length = path.length
     for (let i = path_length - 1; i > -1; i--) {
-        if (path[i] == '/') {
+        if (path[i] == '/' || path[i] == '.') {
             //path = path.slice(0, -1);
-            break;
+            //path[i] = 'x'
+            continue;
         }
-        path = path.slice(0, -1);
+        path_temp += path[i]
+        //path = path.slice(0, -1);
     }
     //path = path.slice(1, path.length);  // Slice the start "/"
     //console.log(path)
-    return path
+    //path = '/' + host + path
+    path_temp = path_temp.split("").reverse().join("")
+    path_temp = '/' + host + path_temp + '/'
+    return path_temp
 }
 
 // Sequential function called if iterate_images() validates the <img> url given
 // Take the Serv.com hosted image URL and re-insert into client's webpage via DOM
 // If err, leave original image URL unchanged
 function insertImg(data, url, path, file_name, query_string) {
-    if (token === null && data.token !== null) {
-        token = data.token
-    }
+    // if (token === null && data.token !== null) {
+    //     token = data.token
+    // }
 
     // Local: 'http://localhost:5005/upload'
     // Deployed: 'https://weshavens.info:443/upload'
     //console.log("insertImg url: ", url)
-    if (data.token !== null) {
+    //if (data.token !== null) {
         fetch
         ('http://localhost:5005/upload',
             {
@@ -214,7 +216,7 @@ function insertImg(data, url, path, file_name, query_string) {
                 headers: {"Content-Type": "application/json"},
                 body: JSON.stringify
                 ({
-                    token: data.token,
+                    //token: data.token,
                     url: url,
                     path: path,
                     file: file_name
@@ -225,26 +227,35 @@ function insertImg(data, url, path, file_name, query_string) {
             .then(response => response.json())
             .then(data => insert_img_url(data['url'], query_string))
             .catch(error => {
-                console.log("ERROR:", error)
-                restore_original_image()
-            }
+                console.log("ERROR on node/API upload call:", error)
             });
 
-    }
+    //}
 
     //console.log("Current Token: ", data['token']);
 }
 
 
 function insert_img_url(sirv_address, query_string) {
-    console.log(sirv_address)
+    console.log("SIRV address response recieved: " + sirv_address);
+
+
 
     // Grab the original URL, logic below to slice and keep the query string
     let reinsert = document.querySelector('[service="wesMS"]')
 
+
     console.log(reinsert)
 
     reinsert.setAttribute("service","")
+
+
+    if (sirv_address == undefined) {
+        console.log("undefined URL response received from node server, reinsert original image URL")
+        reinsert.setAttribute("src", URL_concat)  // Restore original image URL
+        return
+    }
+
     reinsert.setAttribute("src", sirv_address + query_string)
 }
 

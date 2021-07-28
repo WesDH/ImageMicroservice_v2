@@ -1,11 +1,12 @@
 Wesley's Image Manipulation Microservice.
 
-Usage:
+
+
+***Usage***
 
 1) Link in the helper JS file at the end of your HTML body for a webpage that would like to utilize this Microservice:
 The javascript file is hosted here:
 https://weshavens.info/CS361_image/wesMS_helper.js
-
 
 Example usage of helper Js file:
 <body>
@@ -14,6 +15,8 @@ Example usage of helper Js file:
        ...
     <script src="https://weshavens.info/CS361_image/wesMS_helper.js"></script>
 </body>
+
+
 
 2) Calling the microservice on images:
 

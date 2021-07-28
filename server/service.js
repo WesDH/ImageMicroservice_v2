@@ -34,7 +34,7 @@ app.post
     create_token(process.env.clientId, process.env.clientSecret)
         .then(() => {
             let response_body = {
-                status: "Success"
+                status: `Token creation success: ${token}`
             }
             response.send(response_body)
         });
@@ -48,7 +48,8 @@ app.post
     //console.log(request.body);
     //response.setHeader('Access-Control-Allow-Origin', 'http://localhost:63342');
     //console.log("in the upload", request.body)
-    upload_img(request.body['token'], request.body['url'], request.body['path'], request.body['file'])
+    //upload_img(request.body['token'], request.body['url'], request.body['path'], request.body['file'])
+    upload_img(token, request.body['url'], request.body['path'], request.body['file'])
         .then(() => {
             let response_body = {
                 url: url,
@@ -57,12 +58,13 @@ app.post
         });
 
 }); // End of app.post upload
-
+//.then((url) => console.log(url))
 async function upload_img(token, orig_url, path, file) {
-    url = await send_request_upload(token, orig_url, path, file);
+    url = await send_request_upload(token, orig_url, path, file)
+        .catch(error => console.log(`Caught by .catch ${error}`));
 }
 function send_request_upload(token, orig_url, path, file) {
-    return new Promise(resolve => {
+    return new Promise((resolve, reject) => {
         var options = {
             "method": "POST",
             "hostname": "api.sirv.com",
@@ -92,9 +94,9 @@ function send_request_upload(token, orig_url, path, file) {
                 resolve(`https://pernetyp.sirv.com${path}${file}`)
             });
 
-            if (res.statusCode == 401) {
-                //console.log("Err on upload req to API");
-                //res.send("Err on upload req to API")
+            if (res.statusCode >= 400) {
+                console.log(`Err on upload req to API:  ${res.statusCode}`);
+                reject('Err on upload req to API');
             }
         });
 
