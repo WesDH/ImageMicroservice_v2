@@ -29,7 +29,11 @@ Example usage of helper Js file:
 
     3.c) The end of the image url must have a query string with the manipulation parameters.
          A comprehensive demo of query parameters offered by Sirv's API can be seen here:
+
          https://sirv.com/demos/dynamic-imaging/
+
+         Or, for more specific details:
+         https://sirv.com/help/articles/dynamic-imaging/
 
 
 
