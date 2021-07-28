@@ -2,6 +2,8 @@ const express = require('express');
 const http = require('https');
 const cors = require('cors');
 const app = express();
+const dotenv = require('dotenv');
+dotenv.config();
 
 // Enable CORS middleware
 app.use(cors())
@@ -25,13 +27,14 @@ let url = null
 app.post
 ('/', (request, response) =>
 {
+    //console.log(process.env.clientId)
+    //console.log(process.env.clientSecret)
     //console.log(request.body);
     //response.setHeader('Access-Control-Allow-Origin', 'http://localhost:63342');
-    create_token(request.body['ID'], request.body['secret'])
+    create_token(process.env.clientId, process.env.clientSecret)
         .then(() => {
             let response_body = {
-                url: "tempssss.html",
-                token: token
+                status: "Success"
             }
             response.send(response_body)
         });
@@ -60,7 +63,6 @@ async function upload_img(token, orig_url, path, file) {
 }
 function send_request_upload(token, orig_url, path, file) {
     return new Promise(resolve => {
-
         var options = {
             "method": "POST",
             "hostname": "api.sirv.com",
@@ -74,31 +76,27 @@ function send_request_upload(token, orig_url, path, file) {
 
         let url = orig_url
 
-
         var req = http.request(options, function (res) {
             var chunks = [];
-
 
 
             res.on("data", function (chunk) {
                 chunks.push(chunk);
             });
 
-
             res.on("end", function () {
                 var body = Buffer.concat(chunks);
-                let api_response = body.toString();
-                console.log(api_response);
+                //let api_response = body.toString();
+                //console.log(api_response);
                 //https://pernetyp.sirv.com/CS361_image/my_pic3.png
                 resolve(`https://pernetyp.sirv.com${path}${file}`)
             });
 
             if (res.statusCode == 401) {
-                console.log("yo");
-                res.send("yo")
+                //console.log("Err on upload req to API");
+                //res.send("Err on upload req to API")
             }
         });
-
 
         let the_payload = "[" +
             "{" +
@@ -109,16 +107,11 @@ function send_request_upload(token, orig_url, path, file) {
             "}" +
             "]"
 
-
-
-
         req.write(the_payload);
         req.end();
 
-
     }); // end of "return new Promise" line
 } // end of send_request_upload function definition
-
 
 
 
@@ -152,7 +145,7 @@ function send_request(ID, secret) {
                 //console.log('token:', apiResponse.token);
                 resolve(apiResponse.token)
 
-                console.log('expiresIn:', apiResponse.expiresIn);
+                //console.log('expiresIn:', apiResponse.expiresIn);
                 //console.log('scope:', apiResponse.scope);
             });
         });
@@ -163,70 +156,5 @@ function send_request(ID, secret) {
         req.end();
     });
 }
-
-
-
-
-
-
-// function create_token_old(ID, secret) {
-//     const options = {
-//         'method': 'POST',
-//         'hostname': 'api.sirv.com',
-//         'path': '/v2/token',
-//         'headers': {
-//             'content-type': 'application/json'
-//         }
-//     };
-//
-//     let token_temp = null;
-//
-//     const clientId = 'M0vtT7yKrvnptKLrnP888opa3Rt';
-//     const clientSecret = 'WQZdQzAXPWNxIYzt/g08jRAr2Fbe/2ueZx3hhRF3gxLuy56T23QbTHRv6+aN0P9tEXhgCj4AwTcA7hC3q8zO9g==';
-//
-//     return doSomethingUseful()
-//     async function doSomethingUseful() {
-//         // return the response
-//         return await doRequest(options, clientId, clientSecret);
-//     }
-//
-//     function doRequest(options, clientId, clientSecret) {
-//         return new Promise((resolve, reject) => {
-//             const req = http.request(options, function (res) {
-//                 const chunks = [];
-//
-//                 res.on('error', err => {
-//                     reject(err);
-//                 });
-//
-//                 res.on('data', (chunk) => {
-//                     chunks.push(chunk);
-//                 });
-//
-//                 res.on('end', () => {
-//                     const body = Buffer.concat(chunks);
-//                     const apiResponse = JSON.parse(body.toString());
-//
-//
-//
-//
-//                     console.log('token:', apiResponse.token);
-//                     return resolve(apiResponse.token);
-//                     //console.log('expiresIn:', apiResponse.expiresIn);
-//                     //console.log('scope:', apiResponse.scope);
-//                 });
-//             });
-//
-//             req.write(JSON.stringify({
-//                 clientId,
-//                 clientSecret
-//             }));
-//
-//             req.end();
-//         });
-//
-//         }
-// }
-
 
 app.listen(5005, () => console.log(`App is running on port: 5005`))

@@ -7,38 +7,48 @@
 <body>
 
 Base image url without modifications:<br>
-<img src="images/flowers.jpg">
-<br><
+<img src="https://weshavens.info/CS361_image/images/R-28848-1169305849.jpeg">
+<br><br><br><br>
+<img service="wesMS" src="https://weshavens.info/CS361_image/images/R-28848-1169305849.jpeg?w=150">
 
-Full base image url with added microservice tag and query string to modify image. Now hosted on sirv.com<br>
-<img service="wesMS" src="https://weshavens.info/CS361_image/images/flowers.jpg?w=250">
+<img service="wesMS" src="https://weshavens.info/CS361_image/images/R-28848-1169305849.jpeg?w=250">
 
+<br>Commented out HTML below to save bandwidth for now<br>
+<!--Below image HTML tags before modification by helper JS file:<br>-->
+<!--<img src="images/original_url.png"><br>-->
+<!--<img style="border:1px solid #2ef6e1;" src="images/modified_url2.png"><br><br>-->
 
-<br><br>
+<!--After, modification, image now hosted on sirv.com and reinserted into webpage with javascript.<br>-->
+<!--For example on one image, sirv.com query string API applies:<br>-->
+<!--cx=55% crop start at 55% on X-axis of original image<br>-->
+<!--cy=50% crop start at 50% on Y-axis of original image<br>-->
+<!--cw=600 crop width 600 px<br>-->
+<!--ch=220 crop height 220 px<br><br>-->
 
-Base image url without modifications:<br>
-<img src="images/24851835485_4eace6e81e_k.jpg">
-<br><
+<!--HTML tag of cropped image after modification by helper JS file:<br>-->
+<!--<img style="border:1px solid black;" src="images/modified_url.png"><br>-->
+<!--<br>-->
+<!--<br>-->
 
-Full base image url with added microservice tag and query string to modify image. Now hosted on sirv.com<br>
-<img service="wesMS" src="https://weshavens.info/CS361_image/images/24851835485_4eace6e81e_k.jpg?cx=55%25&cy=45%25&cw=400&ch=400">
-
-<br><br>
-
-Base image url without modifications:<br>
-<img src="images/R-28848-1169305849.jpeg">
-<br><
-
-Full base image url with added microservice tag and query string to modify image. Now hosted on sirv.com<br>
-<img service="wesMS" src="https://weshavens.info/CS361_image/images/R-28848-1169305849.jpeg?sharpen=35&vignette.value=23&colortone=sunset&w=400">
-
-
-
-
+<!--<br><br>-->
+<!--<img service="wesMS" src="https://weshavens.info/CS361_image/images/24851835485_4eace6e81e_k.jpg?cx=55%25&cy=50%25&cw=600&ch=220">-->
+<!--<br>-->
 
 
-<br><br>
 
+<!--<br>-->
+
+<!--<img service="wesMS" src="https://weshavens.info/CS361_image/images/24851835485_4eace6e81e_k.jpg-->
+<!--?w=300&colortone=texas&frame.style=mirror&text=Wesley Havens&text.size=40%&text.color=black&text.position=northeast&text.font.family=Shadows%20Into%20Light%20Two">-->
+
+<!--<br><br><br>-->
+<!--A few more examples of dynamic image manipulation done by SIRV.com's API applied to base image URL:-->
+<!--<br><br>-->
+<!--<img service="wesMS" src="https://weshavens.info/CS361_image/images/24851835485_4eace6e81e_k.jpg-->
+<!--?w=640&grayscale=true">-->
+<!--<br><br>-->
+<!--<img service="wesMS" src="https://weshavens.info/CS361_image/images/24851835485_4eace6e81e_k.jpg-->
+<!--?w=340&saturation=100&rotate=-27">-->
 
 <script src="wesMS_helper.js"></script>
 </body>
