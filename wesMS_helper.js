@@ -224,7 +224,11 @@ function insertImg(data, url, path, file_name, query_string) {
         )
             .then(response => response.json())
             .then(data => insert_img_url(data['url'], query_string))
-            .catch(error => console.log("ERROR:", error));
+            .catch(error => {
+                console.log("ERROR:", error)
+                restore_original_image()
+            }
+            });
 
     }
 
@@ -235,15 +239,17 @@ function insertImg(data, url, path, file_name, query_string) {
 function insert_img_url(sirv_address, query_string) {
     console.log(sirv_address)
 
-
     // Grab the original URL, logic below to slice and keep the query string
     let reinsert = document.querySelector('[service="wesMS"]')
 
     console.log(reinsert)
 
-
     reinsert.setAttribute("service","")
     reinsert.setAttribute("src", sirv_address + query_string)
 }
 
-// fetch
+// Function to reinsert original, unmodified image in event any errors with response
+// received from the Node server.
+function restore_original_image() {
+    console.log("pending creation")
+}
