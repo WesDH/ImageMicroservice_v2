@@ -25,23 +25,44 @@ service_images.forEach(element => {
 
     let url = tmp_str
     console.log(tmp_str)
-    fetch
-    ('http://localhost:5005/',
-        {
-            method: 'POST',
-            headers: {"Content-Type": "application/json"},
-            body: JSON.stringify
-            ({
-                ID: clientId,
-                secret: clientSecret,
-                token: token
-            })
 
-        }
-    )
-        .then(response => response.json())
-        .then(data => insertImg(data, url, path_dir, file_name, query_str))
-        .catch(error => console.log(error));
+
+    let xhr = new XMLHttpRequest();
+    xhr.open("POST", "http://localhost:5005/", true);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.send(JSON.stringify({
+        ID: clientId,
+        secret: clientSecret,
+        token: token
+    }));
+    xhr.onload = function() {
+        console.log("HELLO")
+        console.log(this.responseText);
+        let data = JSON.parse(this.responseText);
+        insertImg(data, url, path_dir, file_name, query_str)
+        console.log(data);
+    }
+
+
+
+
+    // fetch
+    // ('http://localhost:5005/',
+    //     {
+    //         method: 'POST',
+    //         headers: {"Content-Type": "application/json"},
+    //         body: JSON.stringify
+    //         ({
+    //             ID: clientId,
+    //             secret: clientSecret,
+    //             token: token
+    //         })
+    //
+    //     }
+    // )
+    //     .then(response => response.json())
+    //     .then(data => insertImg(data, url, path_dir, file_name, query_str))
+    //     .catch(error => console.log(error));
 
 
 });
