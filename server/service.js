@@ -30,11 +30,13 @@ app.post
     //console.log(process.env.clientId)
     //console.log(process.env.clientSecret)
     //console.log(request.body);
+    //console.log(request.body.insertNum)
     //response.setHeader('Access-Control-Allow-Origin', 'http://localhost:63342');
     create_token(process.env.clientId, process.env.clientSecret)
         .then(() => {
             let response_body = {
-                status: `Token creation success: ${token}`
+                status: `Token creation success: ${token}`,
+                insertID: `${request.body.insertNum}`
             }
             response.send(response_body)
         });
@@ -53,6 +55,7 @@ app.post
         .then(() => {
             let response_body = {
                 url: url,
+                insertID: request.body.insertNum
             }
             response.send(response_body)
         });
