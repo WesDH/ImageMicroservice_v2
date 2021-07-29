@@ -21,7 +21,7 @@ Example usage of helper Js file:
 2) Calling the microservice on images:
 
     2.a) Please have an image tag with including attribute/value of:
-            service="WesMS"
+            service="wesMS"   (Case Sensititive!)
 
     3.b) The image that wishes to be modified source MUST include the full url.
             VALID: https://weshavens.info/CS361_image/images/original_url.png

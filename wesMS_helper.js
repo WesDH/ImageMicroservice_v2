@@ -84,7 +84,7 @@ function iterate_images() {
         // Local development: http://localhost:5005/
         // Remote deployment: "https://weshavens.info:443/getKey"
         let xhr = new XMLHttpRequest();
-        xhr.open("POST", "http://localhost:5005/", true);
+        xhr.open("POST", "https://weshavens.info:443/getKey", true);
         xhr.setRequestHeader("Content-Type", "application/json");
         xhr.send(JSON.stringify({ "insertNum": `${insert_num}`  }));
         xhr.onload = function() {
@@ -153,7 +153,7 @@ function insertImg(data, url, path, file_name, query_string, insert_num) {
     // Local development:  'http://localhost:5005/upload'
     // Deployment address: 'https://weshavens.info:443/upload'
     fetch
-    ('http://localhost:5005/upload',
+    ('https://weshavens.info:443/upload',
         {
             method: 'POST',
             headers: {"Content-Type": "application/json"},
