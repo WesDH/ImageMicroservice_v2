@@ -1,5 +1,7 @@
 Wesley's Image Manipulation Microservice.
 
+** Known issues **
+Request seems to fail on first load of larger images (then works on subsequent tries), try passing it small/medium image URLs for now.
 
 
 ***Usage***
