@@ -1,5 +1,15 @@
 Wesley's Image Manipulation Microservice.
 
+
+         A comprehensive demo of query parameters offered by Sirv's API can be seen here:
+
+         https://sirv.com/demos/dynamic-imaging/
+
+         Or for more details, see here:
+         https://sirv.com/help/articles/dynamic-imaging/
+
+
+
  ****** Usage using a standard POST request  ******
 
 You can send a POST request to the Microservice Node server. In response, you will receive the URL of the hosted image.
@@ -90,13 +100,6 @@ Example usage of helper Js file:
             INVALID: images/original_url.png
 
     3.c) The end of the image url must have a query string with the manipulation parameters.
-         A comprehensive demo of query parameters offered by Sirv's API can be seen here:
-
-         https://sirv.com/demos/dynamic-imaging/
-
-         Or, for more specific details:
-         https://sirv.com/help/articles/dynamic-imaging/
-
 
 
 Here is a simple example of an <img> tag that will call the Microservice and apply 50% scaling and
