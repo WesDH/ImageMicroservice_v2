@@ -47,7 +47,8 @@ app.post
 app.post
 ('/upload', (request, response) =>
 {
-    //console.log(request.body);
+
+    console.log(request.body);
     //response.setHeader('Access-Control-Allow-Origin', 'http://localhost:63342');
     //console.log("in the upload", request.body)
     //upload_img(request.body['token'], request.body['url'], request.body['path'], request.body['file'])
@@ -57,11 +58,58 @@ app.post
                 url: url,
                 insertID: request.body.insertNum
             }
+            console.log(response_body)
             response.send(response_body)
         });
 
 }); // End of app.post upload
 //.then((url) => console.log(url))
+
+
+
+
+
+
+
+
+
+
+// Incoming post request to upload source image to SIRV
+app.post
+('/uploadV2', (request, response) =>
+{
+    create_token(process.env.clientId, process.env.clientSecret)
+        .then(() => {console.log(token)      });
+
+    console.log(request.body);
+    //response.setHeader('Access-Control-Allow-Origin', 'http://localhost:63342');
+    //console.log("in the upload", request.body)
+    //upload_img(request.body['token'], request.body['url'], request.body['path'], request.body['file'])
+    upload_img(token, request.body['url'], request.body['path'], request.body['file'])
+        .then(() => {
+            let response_body = {
+                url: url,
+                insertID: request.body.insertNum
+            }
+            console.log(response_body)
+            response.send(response_body)
+        });
+
+}); // End of app.post upload
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 async function upload_img(token, orig_url, path, file) {
     url = await send_request_upload(token, orig_url, path, file)
         .catch(error => console.log(`Caught by .catch ${error}`));
